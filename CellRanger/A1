@@ -1,25 +1,58 @@
 #!/bin/bash
-#SBATCH --job-name=CIN1CellRangertdT1
-#SBATCH --output=/scratch/users/annie999/CIN1CellRangertdT1_output.txt
-#SBATCH --error=/scratch/users/annie999/CIN1CellRangertdT1_error.txt
+#SBATCH --job-name=gCap10xCellRangerA1
+#SBATCH --output=/scratch/users/xrguo/gCap10xCellRanger_output.txt
+#SBATCH --error=/scratch/users/xrguo/gCap10xCellRanger_error.txt
 #SBATCH --partition=krasnow
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=128
 #SBATCH --mem=64G
 #SBATCH --time=72:00:00
-#SBATCH --mail-user=annie999@stanford.edu
+#SBATCH --mail-user=xrguo@stanford.edu
 #SBATCH --mail-type=BEGIN,END,FAIL
 
 # Change directory to where the fastq files are located
-cd /oak/stanford/groups/krasnow/ATN/snRNAseq_CIN1sample
+cd /scratch/groups/krasnow/xrguo \
 
 # Run CellRanger count command
-/oak/stanford/groups/krasnow/ATN/CIN1_CellRangerFiles/cellranger-8.0.0/cellranger count \
- --id=ATNAlignedReads_tdt1 \
- --transcriptome=/oak/stanford/groups/krasnow/ATN/ReferenceGenometdT/MusmusculusAi9tdT_genome \
- --fastqs=/oak/stanford/groups/krasnow/ATN/snRNAseq_CIN1sample \
- --sample=CIN_1 \
+/scratch/users/xrguo/cellranger-8.0.1/cellranger count \
+ --id=gCap10xCellRanger_aCap_A1 \
+ --transcriptome=/scratch/users/xrguo/data-gex-GRCh38-2024-A \
+ --fastqs=/scratch/groups/krasnow/xrguo \
+ --sample=aCap_EDNRBpos_AT1_Stromal_bulk \
  --create-bam=false \
  --include-introns=true \
  --localcores=128 \
- --localmem=64
+ --localmem=64 
+
+/scratch/users/xrguo/cellranger-8.0.1/cellranger count \
+ --id=gCap10xCellRanger_endo_A1 \
+ --transcriptome=/scratch/users/xrguo/refdata-gex-GRCh38-2024-A \
+ --fastqs=/scratch/groups/krasnow/xrguo \
+ --sample=endothelial_cells_CD31pos_CD36eg_CD93pos_EDNRBneg \
+ --create-bam=false \
+ --include-introns=true \
+ --localcores=128 \
+ --localmem=64 \
+
+/scratch/users/xrguo/cellranger-8.0.1/cellranger count \
+ --id=gCap10xCellRanger_AT2_s_A1 \
+ --transcriptome=/scratch/users/xrguo/refdata-gex-GRCh38-2024-A \
+ --fastqs=/scratch/groups/krasnow/xrguo \
+ --sample=gCap_CD36pos-AT2-s \
+ --create-bam=false \
+ --include-introns=true \
+ --localcores=128 \
+ --localmem=64 \
+
+/scratch/users/xrguo/cellranger-8.0.1/cellranger count \
+ --id=gCap10xCellRanger_AT2_A1 \
+ --transcriptome=/scratch/users/xrguo/refdata-gex-GRCh38-2024-A \
+ --fastqs=/scratch/groups/krasnow/xrguo \
+ --sample=gCap_CD36pos_CD93pos-AT2 \
+ --create-bam=false \
+ --include-introns=true \
+ --localcores=128 \
+ --localmem=64 
+
+#unzip tar.gz files
+tar -xvzf refdata-gex-GRCh38-2024-A.tar.gz
